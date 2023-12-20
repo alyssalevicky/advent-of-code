@@ -1,16 +1,6 @@
 import sys
 import math
 
-def apply_rule(toApply, nextNumber):
-    for rule in toApply:
-            source = int(rule[sourceIndex])
-            range = int(rule[rangeIndex])
-            destination = int(rule[destinationIndex])
-            if source <= nextNumber <= (source + range):
-                diff = nextNumber - source
-                return destination + diff
-    return nextNumber
-
 seeds = []
 toSoil = []
 toFertilizer = []
