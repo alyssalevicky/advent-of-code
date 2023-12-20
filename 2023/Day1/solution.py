@@ -1,5 +1,5 @@
 total = 0
-digits = ["one","two","three","four","five","six","seven","eight","nine"]
+digits = {"one":'1',"two":'2',"three":'3',"four":'4',"five":'5',"six":'6',"seven":'7',"eight":'8',"nine":'9'}
 
 
 #with open("2023\Day1\input.txt") as f:
@@ -7,21 +7,19 @@ with open("2023\Day1\partTwoInput.txt") as f:
   for line in f:
     # if line == '\n' or line == "":
     
-    characterList = list(line)
-    numberList = list()
+    numberList = []
     
-    place = 0
-    for item in characterList:
-        try:
-            number = int(item)
-            numberList.append( str(number))
-            place += 1
-        except ValueError:
-            for digit in digits:
-                testString = ""
-                digitLength = len(digit)
-                
-    
+    for index, char in enumerate(line):
+        if char.isnumeric():
+            numberList.append(char)
+            continue
+
+        for digit in digits:
+            end = len(digit) + index
+            testDigit = line[index:end]
+            if testDigit in digits:
+                numberList.append(digits[testDigit])
+                break
 
     if len(numberList)==1:
         stringNumber = numberList[0] + numberList[0]
