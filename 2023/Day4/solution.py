@@ -67,13 +67,13 @@ with open("2023\Day4\input.txt") as f:
        if x > len(copyCards)-1:
             copyCards.append(1+loop)
        else:   
-            copyCards[x] += 1 + loop
+            copyCards[x] = 1 + copyCards[x] + loop
 
     cardCopies = 1 + loop
     if len(copyCards) > 0:
         copyCards.pop(0)
 
-    print (cardList[0], ", Cards: ", count, "Total to Add: ", cardCopies)
+    print (cardList[0], ", Additional Card Copies: ", count, "Add to Total: ", cardCopies)
 
     total = total + cardCopies
 

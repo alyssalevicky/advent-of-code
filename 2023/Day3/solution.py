@@ -1,67 +1,55 @@
-total = 0
-maxRed = 12
-maxGreen = 13
-maxBlue = 14
-seps = (',', ';', ' ', ':')
+hasSpecialChar = False
 
+def is_special_char(char):
+    if not str(char).isnumeric() and char != '.':
+        return True
+    return False
+
+def is_valid_char(char):
+    return char != '.'  # Periods do not count as a symbol
+
+def is_part_number(engine, row, col):
+    # Check adjacent cells (including diagonals) for symbols
+    isNumber = False
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if i == 0 and j == 0:
+                continue  # Skip the current cell
+            new_row, new_col = row + i, col + j
+            if 0 <= new_row < len(engine) and 0 <= new_col < len(engine[0]):
+                var = engine[new_row][new_col]
+                if is_valid_char(var):
+                    if is_special_char(var):
+                        global hasSpecialChar
+                        hasSpecialChar = True
+                    isNumber = True
+    return isNumber
+
+def sum_part_numbers(engine):
+    sum = 0
+    num = ''
+    for row_idx, row in enumerate(engine):
+        for col_idx, char in enumerate(row):
+            if char.isdigit() and is_part_number(engine, row_idx, col_idx):
+                num += char
+                #sum += int(char)
+            if (char == '.' or not char.isnumeric()) and num != '':
+               global hasSpecialChar
+               numericNum = int(num)
+               if hasSpecialChar == True:
+                  print ("Number adding: ", numericNum)
+                  sum += numericNum
+               num = ''
+               hasSpecialChar = False
+    return sum
+
+# Your engine schematic (replace this with your actual input)
+engine_schematic = []
 
 with open("2023\Day3\input.txt") as f:
-  rows = len(f)
-  cols = len(f[0])
-  arr = [[0]*cols]*rows
   for game in f:
-    
-    #CREATE A LIST OF WORDS
-    txt = game
-    default_sep = seps[0]
+      engine_schematic.append(game.strip())
 
-    # we skip seps[0] because that's the default separator
-    for sep in seps[1:]:
-        txt = txt.replace(sep, default_sep)
-    characterList = [i.strip() for i in txt.split(default_sep)]
-
-
-    #DO SOMETHING WITH THE WORDS
-    red = 0
-    green = 0
-    blue = 0
-    fail = False
-
-    game = characterList[1]
-
-    #Part 1
-    # for index, word in enumerate(characterList):
-    #     if fail == True:
-    #        continue;
-
-    #     if word == "red" and int(characterList[index-1]) > maxRed:
-    #        fail = True
-    #     if word == "green" and int(characterList[index-1]) > maxGreen:
-    #        fail = True
-    #     if word == "blue" and int(characterList[index-1]) > maxBlue:
-    #        fail = True
-
-    # if fail == False:
-    #     total += int(game)
-
-    #Part 2
-    for index, word in enumerate(characterList):
-       
-        if word == "red" and int(characterList[index-1]) > red:
-           red = int(characterList[index-1])
-        if word == "green" and int(characterList[index-1]) > green:
-           green = int(characterList[index-1])
-        if word == "blue" and int(characterList[index-1]) > blue:
-           blue = int(characterList[index-1])
-
-    total = total + (red*green*blue)
-
-    # #CHECK IF VALUES ARE WITHIN A GAME   
-    # if red <= maxRed and green <= maxGreen and blue <= maxBlue:
-    #    total += int(game)
-    
-
-
-
-
-print ("Total: ", total)
+# Calculate the sum of all part numbers
+result = sum_part_numbers(engine_schematic)
+print("Sum of all part numbers:", result)
